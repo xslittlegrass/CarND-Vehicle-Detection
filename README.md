@@ -1,12 +1,12 @@
 # Vehicle Detection Project
 
-This is a project for Udacity self-driving car Nanodegree program. The aim of this project is to detect the vehicles in a dash camera video. The implementation of the project is in the file vehicle_detection.py, and the explanation of the pipeline is in this README and in vehicle_detection.ipynb. The final video output is here.
+This is a project for Udacity self-driving car Nanodegree program. The aim of this project is to detect the vehicles in a dash camera video. The implementation of the project is in the file vehicle_detection.ipynb. The final video output is [here](https://www.youtube.com/watch?v=PncSIx8AHTs).
 
 In this README, each step in the pipeline will be explained in details.
 
 ## Introduction to object detection
 
-Detecting vehicles in a video stream is an object detection problem. The object detection problem can be approached as either a classification problem or a regression problem. As a classification problem, the image are divided into small patches, each of which will be run through a classifier to determine whether there are objects in the patch. Then the bounding boxes will be assigned to locate around patches with high probability. In the regression approach, the whole image will be run through a convolutional neural network to generate directly the bounding boxes.
+Detecting vehicles in a video stream is an object detection problem. An object detection problem can be approached as either a classification problem or a regression problem. As a classification problem, the image are divided into small patches, each of which will be run through a classifier to determine whether there are objects in the patch. Then the bounding boxes will be assigned to locate around patches that are classified with high probability of present of an object. In the regression approach, the whole image will be run through a convolutional neural network to directly generate one or more bounding boxes for objects in the images.
 
 | classification                                                                                                                               | regression                                               |
 |----------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|
@@ -26,6 +26,8 @@ The tiny YOLO v1 is consist of 9 convolution layers and 3 full connected layers.
 ![model](./output_images/mode_yolo_plot.jpg)
 
 There are a total of 45,089,374 parameters in the model and the detail of the architecture is in list in this table
+
+
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to                     
     ====================================================================================================
@@ -92,6 +94,7 @@ There are a total of 45,089,374 parameters in the model and the detail of the ar
     Non-trainable params: 0
     ____________________________________________________________________________________________________
 
+
 In this project, we will use Keras to construct the YOLO model.
 
 ### Postprocessing
@@ -110,10 +113,27 @@ Training the YOLO network is time consuming. We will download the pretrained wei
 load_weights(model,'./yolo-tiny.weights')
 ```
 
-## Predict bounding boxes
+## Results
 
 The following shows the results for several test images with a threshold of 0.17. We can see that the cars are detected:
 
 ![png](./output_images/detection_on_test_images.png)
 
-[Here](https://www.youtube.com/watch?v=PncSIx8AHTs) is the result of applying the same to a video.
+[Here](https://www.youtube.com/watch?v=PncSIx8AHTs) is the result of applying the same pipeline to a video.
+
+## Discussion
+
+The YOLO is known to be fast. In the original paper, the tiny-YOLO is reported to work at nearly 200 FPS on a powerful desktop GPU. In this project, the video is processed on a macbook pro with GeForce GT 750M and the rate is about 6FS without batch processing. In the result video, we see the localization error is relatively large in some frames, where only some portion of the car is in the bounding box. This large localization error is a known issue for YOLO, since the bounding box are directly generated from the network. For future work, a version 2  YOLO network may reduce the localization errors.
+
+## Reference
+
+1. J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, Cvpr (2015).
+2. M. Hohenleutner, F. Langer, O. Schubert, M. Knorr, U. Huttner, S. W. Koch, M. Kira, and R. Huber, Nature 523, 572–575 (2015).
+3. darkflow, https://github.com/thtrieu/darkflow
+4. Darknet.keras, https://github.com/sunshineatnoon/Darknet.keras/
+5. YAD2K, https://github.com/allanzelener/YAD2K
+
+
+
+
+
