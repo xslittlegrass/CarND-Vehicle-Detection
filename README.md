@@ -26,6 +26,7 @@ The tiny YOLO v1 is consist of 9 convolution layers and 3 full connected layers.
 ![model](./output_images/mode_yolo_plot.jpg)
 
 There are a total of 45,089,374 parameters in the model and the detail of the architecture is in list in this table
+
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to                     
     ====================================================================================================
@@ -91,6 +92,7 @@ There are a total of 45,089,374 parameters in the model and the detail of the ar
     Trainable params: 45,089,374
     Non-trainable params: 0
     ____________________________________________________________________________________________________
+
 
 In this project, we will use Keras to construct the YOLO model.
 
