@@ -17,7 +17,15 @@ Detecting vehicles in a video stream is an object detection problem. The object 
 In this project, we will use tiny-YOLO v1, since it's easy to implement and are reasonably fast.
 
 
+## The tiny-YOLO v1
 
+### Architecture of the convolutional neural network
+
+The tiny YOLO v1 is consist of 9 convolution layers and 3 full connected layers. Each convolution layer consists of convolution, leaky relu and max pooling operations. The first 9 convolution layers can be understood as the feature extractor, whereas the last three full connected layers can be understood as the "regression head" that predicts the bounding boxes.
+
+![model](./output_images/mode_yolo_plot.jpg)
+
+There are a total of 45,089,374 parameters in the model and the detail of the architecture is in list in this table
     ____________________________________________________________________________________________________
     Layer (type)                     Output Shape          Param #     Connected to                     
     ====================================================================================================
@@ -84,34 +92,28 @@ In this project, we will use tiny-YOLO v1, since it's easy to implement and are 
     Non-trainable params: 0
     ____________________________________________________________________________________________________
 
+In this project, we will use Keras to construct the YOLO model.
+
+### Postprocessing
+
+The output of this network is a 1470 vector, which contains the information for the predicted bounding boxes. The information is organized in the following way
+
+<img src="./output_images/net_output.png" width="400"/>
+
+The 1470 vector output is divided into three parts, giving the probability, confidence and box coordinates. Each of these three parts is also further divided into 49 small regions, corresponding to the predictions at each cell. In postprocessing steps, we take this 1470 vector output from the network to generate the boxes that with a probability higher than a certain threshold. The detail of these steps are in the `yolo_net_out_to_car_boxes` function in the `utili` class.
+
+### Use pretrained weights
+
+Training the YOLO network is time consuming. We will download the pretrained weights from the [YOLO website](https://pjreddie.com/darknet/yolo/) and load them into our Keras model. The weight loading function is in the `load_weight` function in the utili class
+
+```
+load_weights(model,'./yolo-tiny.weights')
+```
+
+## Predict bounding boxes
+
+The following shows the results for several test images with a threshold of 0.17. We can see that the cars are detected:
+
 ![png](./output_images/detection_on_test_images.png)
 
-In this project, your goal is to write a software pipeline to detect vehicles in a video (start with the test_video.mp4 and later implement on full project_video.mp4), but the main output or product we want you to create is a detailed writeup of the project.  Check out the [writeup template](https://github.com/udacity/CarND-Vehicle-Detection/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup.  
-
-Creating a great writeup:
----
-A great writeup should include the rubric points as well as your description of how you addressed each point.  You should include a detailed description of the code used in each step (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
-
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
-
-You can submit your writeup in markdown or use another method and submit a pdf instead.
-
-The Project
----
-
-The goals / steps of this project are the following:
-
-* Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a classifier Linear SVM classifier
-* Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector. 
-* Note: for those first two steps don't forget to normalize your features and randomize a selection for training and testing.
-* Implement a sliding-window technique and use your trained classifier to search for vehicles in images.
-* Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
-* Estimate a bounding box for vehicles detected.
-
-Here are links to the labeled data for [vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/vehicles.zip) and [non-vehicle](https://s3.amazonaws.com/udacity-sdc/Vehicle_Tracking/non-vehicles.zip) examples to train your classifier.  These example images come from a combination of the [GTI vehicle image database](http://www.gti.ssr.upm.es/data/Vehicle_database.html), the [KITTI vision benchmark suite](http://www.cvlibs.net/datasets/kitti/), and examples extracted from the project video itself.   You are welcome and encouraged to take advantage of the recently released [Udacity labeled dataset](https://github.com/udacity/self-driving-car/tree/master/annotations) to augment your training data.  
-
-Some example images for testing your pipeline on single frames are located in the `test_images` folder.  To help the reviewer examine your work, please save examples of the output from each stage of your pipeline in the folder called `ouput_images`, and include them in your writeup for the project by describing what each image shows.    The video called `project_video.mp4` is the video your pipeline should work well on.  
-
-**As an optional challenge** Once you have a working pipeline for vehicle detection, add in your lane-finding algorithm from the last project to do simultaneous lane-finding and vehicle detection!
-
-**If you're feeling ambitious** (also totally optional though), don't stop there!  We encourage you to go out and take video of your own, and show us how you would implement this project on a new video!
+[Here](https://www.youtube.com/watch?v=PncSIx8AHTs) is the result of applying the same to a video.
