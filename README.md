@@ -101,7 +101,7 @@ In this project, we will use Keras to construct the YOLO model.
 
 The output of this network is a 1470 vector, which contains the information for the predicted bounding boxes. The information is organized in the following way
 
-<img src="./output_images/net_output.png" width="400"/>
+<img src="./output_images/net_output.png" width="600"/>
 
 The 1470 vector output is divided into three parts, giving the probability, confidence and box coordinates. Each of these three parts is also further divided into 49 small regions, corresponding to the predictions at each cell. In postprocessing steps, we take this 1470 vector output from the network to generate the boxes that with a probability higher than a certain threshold. The detail of these steps are in the `yolo_net_out_to_car_boxes` function in the `utili` class.
 
