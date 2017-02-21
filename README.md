@@ -127,8 +127,8 @@ The YOLO is known to be fast. In the original paper, the tiny-YOLO is reported t
 
 ## Reference
 
-1. J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, Cvpr (2015).
-2. M. Hohenleutner, F. Langer, O. Schubert, M. Knorr, U. Huttner, S. W. Koch, M. Kira, and R. Huber, Nature 523, 572–575 (2015).
+1. J. Redmon, S. Divvala, R. Girshick, and A. Farhadi, You Only Look Once: Unified, Real-Time Object Detection, arXiv:1506.02640 (2015).
+2. J. Redmon and A. Farhadi, YOLO9000: Better, Faster, Stronger, arXiv:1612.08242 (2016).
 3. darkflow, https://github.com/thtrieu/darkflow
 4. Darknet.keras, https://github.com/sunshineatnoon/Darknet.keras/
 5. YAD2K, https://github.com/allanzelener/YAD2K
