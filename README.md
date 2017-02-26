@@ -125,7 +125,7 @@ The following shows the results for several test images with a threshold of 0.17
 
 ## Discussion
 
-The YOLO is known to be fast. In the original paper, the tiny-YOLO is reported to work at nearly 200 FPS on a powerful desktop GPU. In this project, the video is processed on a Tesla K20Xm and the rate is about 19FS without batch processing. In the result video, we see the localization error is relatively large in some frames, where only some portion of the car is in the bounding box. This large localization error is a known issue for YOLO, since the bounding box are directly generated from the network. For future work, a version 2  YOLO network may reduce the localization errors.
+The YOLO is known to be fast. In the original paper, the tiny-YOLO is reported to work at nearly 200 FPS on a powerful desktop GPU. In this project, the video is processed on a Tesla K20Xm and the rate is about 19FS without batch processing.
 
 ## Reference
 
